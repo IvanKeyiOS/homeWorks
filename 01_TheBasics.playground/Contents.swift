@@ -33,8 +33,8 @@ var myCityArea: Float = 517.2
 var myCityPopulation: Int = 1765000
 var myCityCountOfAreas: UInt = 18
 
-var MyCityMinTemperature: Float = -28
-var MyCityMaxTemperature: Float = 38
+var myCityMinTemperature: Float = -28
+var myCityMaxTemperature: Float = 38
 
 var isMyCitySafe: Bool? = true
 
