@@ -119,6 +119,7 @@ let needToButForDessert = dessert.subtracting(thereIsInTheFridge)
 
 needToBuy = needToBuyForSalad.union(needToBuyForMainCourse).union(needToButForDessert)
 print(needToBuy)
+
 /*
  TODO: - ❓ Вопросы к изучению (писать ответы не нужно, но быть готовым ответить):
  - Чем отличаются друг от друга array, set and dictionary?
