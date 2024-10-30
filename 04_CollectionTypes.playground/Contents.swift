@@ -15,7 +15,7 @@ foodArray = ["Butter", "Oranges", "Banana", "Apple", "Lemon"]
 
  // - присвойте второму массиву названия напитков (минимум 5)
 
-drinkArray = ["Milk", "Juice", "Water", "Wine", "Cola", "Beer"]
+drinkArray = ["Milk", "Juice", "Water", "Wine", "Cola", "Beer", "Actimel"]
 
  // - добавьте в конец foodArray еще одно значение
  
