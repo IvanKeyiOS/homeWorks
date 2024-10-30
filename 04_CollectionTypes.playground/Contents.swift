@@ -23,7 +23,7 @@ foodArray.append("Fish")
 
  // - добавьте в середину drinkArray еще одно значение
 
-drinkArray.insert("Champagne", at: 3)
+drinkArray.insert("Champagne", at: drinkArray.count / 2)
  
  // - создайте третий массив shoppingList, который должен включать в себя все значения из foodArray and drinkArray
  
