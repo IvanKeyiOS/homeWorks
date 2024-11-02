@@ -94,18 +94,16 @@ retrieveMaxAndMinValue(array: numbersArray)
  Наполните университет студентами и доведите их до выпуска!
  */
 
-let universityStudentsDictionary: [String: Double] = [
-    "Irwin": 7.8,
-    "Hakim": 6.6,
-    "Larry": 4.3,
-    "Ray": 3.2,
-    "Becky": 9.6,
-    "Vanessa": 8.4,
-    "Megan": 7.7,
-    "Tray": 7.5,
-    "Mike": 8.8,
-    "JJ": 9.9
-]
+let universityStudentsDictionary: [String: Double] = ["Irwin": 7.8,
+                                                      "Hakim": 6.6,
+                                                      "Larry": 4.3,
+                                                      "Ray": 3.2,
+                                                      "Becky": 9.6,
+                                                      "Vanessa": 8.4,
+                                                      "Megan": 7.7,
+                                                      "Tray": 7.5,
+                                                      "Mike": 8.8,
+                                                      "JJ": 9.9]
 
 /*Добавьте функцию, которая будет в качестве параметра принимать имя студента и зачислять его в университет. Срединй бал в начале обучения неизвестен.*/
 
@@ -172,10 +170,10 @@ func expelledStudentFromUniversity() {
 }
 
 expelledStudentFromUniversity()
-    /*
-     TODO: - ❓ Вопросы к изучению (писать ответы не нужно, но быть готовым ответить):
-     - Что такое функции?
-     - Что такое argument label and parameter name?
-     - Что такое сквозной параметр (inout)?
-     - Что такое nested functions?
-     */
+/*
+ TODO: - ❓ Вопросы к изучению (писать ответы не нужно, но быть готовым ответить):
+ - Что такое функции?
+ - Что такое argument label and parameter name?
+ - Что такое сквозной параметр (inout)?
+ - Что такое nested functions?
+ */
