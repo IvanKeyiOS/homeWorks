@@ -10,24 +10,30 @@ import UIKit
 
 func printHello() {
     print("Hello there!)")
+    
+    print("=============================================")
 }
 
 printHello()
 
 // - Объявите и реализуйте функцию, которая принимает одно значение - имя, и печатает в консоль именованное приветствие. Используйте parameter name only. Вызовите функцию
-let name: String = "Kate"
+let nameFirst: String = "Kate"
 let nameDif: String = "Jennifer"
 func printHelloForName(nameOnly: String) {
     print("Hello \(nameOnly)!)")
+    
+    print("=============================================")
 }
 
 printHelloForName(nameOnly: nameDif)
-printHelloForName(nameOnly: name)
-// - Скопируйте предыщее решение и измените его, используя argument label.
+printHelloForName(nameOnly: nameFirst)
 
+// - Скопируйте предыщее решение и измените его, используя argument label.
 
 func printHelloForName(for nameOnly: String) {
     print("Hello \(nameOnly)!)")
+    
+    print("=============================================")
 }
 
 printHelloForName(for: "Alex")
@@ -63,11 +69,14 @@ addSymbolToArray(array: &anotherNameArray)
 let firstParameter: Int = 7
 let secondParameter: Int = 8
 
-func sumTwoParameter(first: Int, second: Int) -> Int {
-    return first + second
+func sumTwoParameter(first: Int, second: Int) -> (Int) {
+    first + second
 }
+let sum: Int = sumTwoParameter(first: firstParameter, second: secondParameter)
+print(sum)
 
-sumTwoParameter(first: firstParameter, second: secondParameter)
+
+print("=============================================")
 
 // - Создайте функцию, которая принимает массив типа Int и возвращает tuple с минимальным и максимальным значениями массива.
 
@@ -94,79 +103,93 @@ retrieveMaxAndMinValue(array: numbersArray)
  Наполните университет студентами и доведите их до выпуска!
  */
 
-let universityStudentsDictionary: [String: Double] = ["Irwin": 7.8,
-                                                      "Hakim": 6.6,
-                                                      "Larry": 4.3,
-                                                      "Ray": 3.2,
-                                                      "Becky": 9.6,
-                                                      "Vanessa": 8.4,
-                                                      "Megan": 7.7,
-                                                      "Tray": 7.5,
-                                                      "Mike": 8.8,
-                                                      "JJ": 9.9]
+let applicantsDictionary: [String: Double] = ["Irwin": 0.0,
+                                              "Hakim": 0.0,
+                                              "Larry": 0.0,
+                                              "Ray": 0.0,
+                                              "Becky": 0.0,
+                                              "Vanessa": 0.0,
+                                              "Megan": 0.0,
+                                              "Tray": 0.0,
+                                              "Mike": 0.0,
+                                              "JJ": 0.0]
+
 
 /*Добавьте функцию, которая будет в качестве параметра принимать имя студента и зачислять его в университет. Срединй бал в начале обучения неизвестен.*/
 
-func admitStudentInUniversity(name: String) {
-    for (key, _) in universityStudentsDictionary {
-        if name == key {
-            print("\(name) is accepted to the university")
-        }
+func admitApplicantsInUniversity() -> [String: Double]{
+    var students = [String: Double]()
+    for (name, grade) in applicantsDictionary {
+        students[name] = grade
     }
+    return students
 }
-admitStudentInUniversity(name: "Mike")
+
+admitApplicantsInUniversity()
+var students = admitApplicantsInUniversity()
+print(students)
+
+print("=============================================")
 
 /*Добавьте функцию, которая будет присваивать студентам средний балл. В итоге все студенты должны иметь средний балл.*/
-func giveAverageGrade(name: String)  {
-    for (key, value) in universityStudentsDictionary {
-        if name == key {
-            print("Student \(key) has average grade \(value)")
-        }
+
+func giveAverageGrade() -> [String: Double] {
+    var studentsAverageGrade = [String: Double]()
+    for (name, grade) in students {
+        let range: Double = Double.random(in: 4.5...5)
+        studentsAverageGrade[name] = range
     }
+    return studentsAverageGrade
 }
-giveAverageGrade(name: "Tray")
+giveAverageGrade()
+var studentsAverageGrade = giveAverageGrade()
+print(studentsAverageGrade)
+
+print("=============================================")
 
 /*  Добавьте функцию, которая определит лучшего студента для произношения речи на церемонии выдачи дипломов.*/
 
-func defineTheBestStudent() {
-    let maxValue = universityStudentsDictionary.values.max()
-    for (key, value) in universityStudentsDictionary {
-        if value == maxValue {
-            print("\(key) is the best student who will give speech at the graduation ceremony")
+func defineTheBestStudent() -> (String){
+    let maxValue = studentsAverageGrade.values.max() ?? 0.0
+    var bestStudentName: String = ""
+    for (name, grade) in studentsAverageGrade {
+        if grade == maxValue {
+            bestStudentName = name
+            print("\(name) is the best student who will give speech at the graduation ceremony and his(she) grade is \(grade)")
         }
     }
+    return (bestStudentName)
 }
-defineTheBestStudent()
+let bestStudent = defineTheBestStudent()
 
+print("=============================================")
 //Добавьте функцию, которая будет распечатывать в консоль речь лучшего ученика. Пометьте, кто ее произносит.
 
 func printTheSpeechTheBestStudent() {
-    let maxValue = universityStudentsDictionary.values.max()
-    for (key, value) in universityStudentsDictionary {
-        if value == maxValue {
             print("""
-                  \tGood afternoon esteemed teachers, dear classmates, and respected guests. \nThank you for this incredible honor. \nI am deeply moved and will always remember this moment as a testament to what we can achieve together.\r\(key) gave the speech.
+                  \tGood afternoon esteemed teachers, dear classmates, and respected guests. \nThank you for this incredible honor. \nI am deeply moved and will always remember this moment as a testament to what we can achieve together.\r\"\(bestStudent)\" gave the speech.
                   """)
         }
-    }
-}
 printTheSpeechTheBestStudent()
+
+print("=============================================")
 /* Добавьте функцию, которая будет выдавать студенту диплом (в качестве действия можете распечатать информацию в консоль с именем студента и информацией о выдаче ему диплома).*/
 
 func giveDiplomaToStudent() {
-    for (key, _) in universityStudentsDictionary {
+    for (key, _) in students {
         print("The student \(key) received a diploma")
     }
 }
 
 giveDiplomaToStudent()
 
+print("=============================================")
+
 /*Добавьте функцию, которая будет отчислять студента из университета. Ведь после выдачи дипломов, студентов нужно отчислить.*/
 
 func expelledStudentFromUniversity() {
-    for (key, _) in universityStudentsDictionary {
-        print("The student \(key) was expelled after received a diploma")
-    }
+    students.removeAll()
+    print("Количество студентов в университете после выдачи дипломов \(students.count)")
 }
 
 expelledStudentFromUniversity()
@@ -177,3 +200,50 @@ expelledStudentFromUniversity()
  - Что такое сквозной параметр (inout)?
  - Что такое nested functions?
  */
+
+
+/*
+ Представьте, что вы работаете над программой по учету студентов в университете.
+ Создайте словарь, который будет содержать имена студентов и средний бал каждого из них. Это будут студенты, зачисленные в наш университет.
+ Добавьте функцию, которая будет в качестве параметра принимать имя студента и зачислять его в университет. Срединй бал в начале обучения неизвестен.
+ Добавьте функцию, которая будет присваивать студентам средний балл. В итоге все студенты должны иметь средний балл.
+ Добавьте функцию, которая определит лучшего студента для произношения речи на церемонии выдачи дипломов.
+ Добавьте функцию, которая будет распечатывать в консоль речь лучшего ученика. Пометьте, кто ее произносит.
+ Добавьте функцию, которая будет выдавать студенту диплом (в качестве действия можете распечатать информацию в консоль с именем студента и информацией о выдаче ему диплома).
+ Добавьте функцию, которая будет отчислять студента из университета. Ведь после выдачи дипломов, студентов нужно отчислить.
+ Наполните университет студентами и доведите их до выпуска!
+ */
+
+//let universityStudentsDictionary: [String: Double] = ["Irwin": 0,
+//                                                      "Hakim": 0,
+//                                                      "Larry": 0,
+//                                                      "Ray": 0,
+//                                                      "Becky": 0,
+//                                                      "Vanessa": 0,
+//                                                      "Megan": 0,
+//                                                      "Tray": 0,
+//                                                      "Mike": 0,
+//                                                      "JJ": 0]
+
+/*Добавьте функцию, которая будет в качестве параметра принимать имя студента и зачислять его в университет. Срединй бал в начале обучения неизвестен.*/
+
+//func admitStudentInUniversity(name: String, grade: Double) {
+//    for (key, _) in universityStudentsDictionary {
+//        if name == key {
+//            print("\(name) is accepted to the university")
+//        }
+//    }
+//}
+
+let irwin: (String, Double) = ("Irwin", 0.0)
+let hakim: (String, Double) = ("Hakim", 0.0)
+let Larry: (String, Double) = ("Larry", 0.0)
+let ray: (String, Double) = ( "Ray", 0.0)
+let becky: (String, Double) = ("Becky", 0.0)
+let vanessa: (String, Double) = ( "Vanessa", 0.0)
+let megan: (String, Double) = ("Megan", 0.0)
+let tray: (String, Double) = ("Tray", 0.0)
+let mike: (String, Double) = ("Mike", 0.0)
+let jj: (String, Double) = ("JJ", 0.0)
+
+
