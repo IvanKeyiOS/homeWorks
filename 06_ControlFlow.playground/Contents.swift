@@ -134,32 +134,10 @@ print(averageStudentsGrade)
 for (key, value) in averageStudentsGrade {
   
 }
-let sortedValues = averageStudentsGrade.values.sorted()
+let sortedValues = averageStudentsGrade.sorted { $0.value > $1.value }
+
 print(sortedValues)
 
-let sort = averageStudentsGrade.values.sorted()
-
-
-
-let numbers = [1, 2, 3, 4, 5]
-let reversedNumbers = numbers.sorted()
-let rev = numbers.reversed()
-print(reversedNumbers)
-
-
-
-
-
-
-
-
-
-
-
-
-
-//let sortedDict = Dictionary(uniqueKeysWithValues: sortedByKeys)
-//print(sortedDict)  // Вывод: ["a": 1, "b": 2, "c": 3]
 
 /*
  TODO: - ❓ К изучению:
