@@ -78,7 +78,7 @@ print("Предложения в тексте: \(filteredSentences)")
 //От пробелов (\n) можно избавить с помощью .whitespaces, для переносов (\t) тоже есть свойство, кажется .newlines
 
 print("=============================================================================================================================================================")
-/* lThese letters are vowels in English: A, E, I, O and U (and sometimes W and Y) It is said that Y is "sometimes" a vowel because it represents both vowel and consonant sounds. In the words cry, sky, fly, my and why, the letter Y represents the vowel sound /aɪ/.
+/* These letters are vowels in English: A, E, I, O and U (and sometimes W and Y) It is said that Y is "sometimes" a vowel because it represents both vowel and consonant sounds. In the words cry, sky, fly, my and why, the letter Y represents the vowel sound /aɪ/.
 */
 
 let text = totalString

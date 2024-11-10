@@ -33,7 +33,9 @@ func printHelloForName(for nameOnly: String) {
 
 printHelloForName(for: "Alex")
 // - Объявите массив типа String с несколькими значениями. Реализуйте функцию, которая принимает объявленный массив, добавляет к каждому значению массива "!" и возвращает массив с измененными значениями.
+
 let nameArray: [String] = ["Paul", "John", "James", "Colin", "Bruce", "Richard", "Stephen"]
+
 func addToEveryItemArray(array: [String]) -> [String] {
     var arrayWithAdd: [String] = []
     for i in array {
@@ -44,6 +46,7 @@ func addToEveryItemArray(array: [String]) -> [String] {
 addToEveryItemArray(array: nameArray)
 // - Измените предыдущее решение, используя сквозной параметр inout.
 var anotherNameArray: [String] = ["George", "Michael", "Shaquil", "Broony", "Andre", "Shauon", "David"]
+
 func addSymbolToArray(array: inout [String]) -> [String] {
     var arrayWithAdd: [String] = []
     for i in array {
@@ -86,7 +89,7 @@ retrieveMaxAndMinValue(array: numbersArray)
  Добавьте функцию, которая будет отчислять студента из университета. Ведь после выдачи дипломов, студентов нужно отчислить.
  Наполните университет студентами и доведите их до выпуска!
  */
-let applicantsDictionary: [String: Double] = ["Irwin": 0.0,
+var applicantsDictionary: [String: Double] = ["Irwin": 0.0,
                                               "Hakim": 0.0,
                                               "Larry": 0.0,
                                               "Ray": 0.0,
@@ -96,9 +99,8 @@ let applicantsDictionary: [String: Double] = ["Irwin": 0.0,
                                               "Tray": 0.0,
                                               "Mike": 0.0,
                                               "JJ": 0.0]
+print(applicantsDictionary)
 
-
-/*Добавьте функцию, которая будет в качестве параметра принимать имя студента и зачислять его в университет. Срединй бал в начале обучения неизвестен.*/
 /*Добавьте функцию, которая будет в качестве параметра принимать имя студента и зачислять его в университет. Срединий бал в начале обучения неизвестен.*/
 
 func admitApplicantsInUniversity() -> [String: Double]{
@@ -146,12 +148,12 @@ let bestStudent = defineTheBestStudent()
 
 //Добавьте функцию, которая будет распечатывать в консоль речь лучшего ученика. Пометьте, кто ее произносит.
 
-func printTheSpeechTheBestStudent() {
+func printTheSpeechTheBestStudent(bestStudent: String) {
             print("""
                   \tGood afternoon esteemed teachers, dear classmates, and respected guests. \nThank you for this incredible honor. \nI am deeply moved and will always remember this moment as a testament to what we can achieve together.\r\"\(bestStudent)\" gave the speech.
                   """)
         }
-printTheSpeechTheBestStudent()
+printTheSpeechTheBestStudent(bestStudent: bestStudent)
 
 /* Добавьте функцию, которая будет выдавать студенту диплом (в качестве действия можете распечатать информацию в консоль с именем студента и информацией о выдаче ему диплома).*/
 
@@ -168,7 +170,7 @@ giveDiplomaToStudent()
 
 func expelledStudentFromUniversity() {
     students.removeAll()
-    print("Количество студентов в университете после выдачи дипломов \(students.count)")
+    print("Number of students at the university after graduation: \(students.count)")
 }
 
 expelledStudentFromUniversity()
