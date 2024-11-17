@@ -39,23 +39,23 @@ var mySomeTuple: (Int, Int, Int, Int, Int) = (1384134304304233, 2, 3, 4, 5)
 
 if mySomeTuple.0 % 2 == 0 {
     print(mySomeTuple.0)
-} else { }
+}
 
 if mySomeTuple.1 % 2 == 0 {
     print(mySomeTuple.1)
-} else { }
+}
     
 if mySomeTuple.2 % 2 == 0 {
     print(mySomeTuple.2)
-} else { }
+}
 
 if mySomeTuple.3 % 2 == 0 {
     print(mySomeTuple.3)
-} else { }
+}
 
 if mySomeTuple.4 % 2 == 0 {
     print(mySomeTuple.4)
-} else { }
+}
 
 print("=========================================================================================================================================")
 // MARK: - Exercise 2. Нечетные числа
@@ -69,7 +69,7 @@ var range = -10...10
 for number in range {
     if number % 2 == 0 && number < 0 {
         print(number)
-    } else { }
+    } 
 }
 print("=========================================================================================================================================")
 // MARK: - Exercise 3. Игра в Кости*
