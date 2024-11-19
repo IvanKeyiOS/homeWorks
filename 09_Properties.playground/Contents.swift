@@ -88,8 +88,8 @@ print("Square is equal - \"\(square.area)\"")
 @propertyWrapper
 struct RangedValue {
     private var weight: Int = 90
-    private var min = 60
-    private var max = 140
+    private var min: Int
+    private var max: Int
     
     var wrappedValue: Int {
         get {
@@ -105,7 +105,7 @@ struct RangedValue {
                 weight = max }
         }
     }
-    init(min: Int, max: Int) {
+    init(min: Int = 60, max: Int = 140) {
         self.min = min
         self.max = max
     }
@@ -128,8 +128,8 @@ class User {
             weight > oldValue ? print("Person gaining weight") : print("Person losing weight")
         }
     }
-    @RangedValue(min: 60, max: 140) var minWeight: Int
-    @RangedValue(min: 60, max: 140) var maxWeight: Int
+    @RangedValue(min: 60) var minWeight: Int
+    @RangedValue(max: 140) var maxWeight: Int
     
     init(firstName: String, secondName: String, age: Int, height: Int, weight: Int, minWeight: Int, maxWeight: Int) {
         self.firstName = firstName
@@ -142,20 +142,21 @@ class User {
         User.count += 1
     }
 }
-
+RangedValue.init(min: 20, max: 500)
 var newPerson = User(firstName: "Adwin", secondName: "Blake", age: 44, height: 185, weight: 85, minWeight: 55, maxWeight: 125)
 newPerson.age = 47
 newPerson.age = 47
 newPerson.age = 48
 newPerson.weight = 93
-newPerson.weight = 90
+newPerson.weight = 53
+
 print("How many are objects in class: \"User\" -> \(User.count)")
 
-newPerson.minWeight = 65
+newPerson.minWeight = 300
 print(newPerson.minWeight)
-newPerson.weight = 33
+newPerson.weight = 25
 print(newPerson.weight)
-
+RangedValue.init(min: 20, max: 500)
 var anotherUser = User(firstName: "Murray", secondName: "Andy", age: 40, height: 185, weight: 78, minWeight: 55, maxWeight: 135)
 print("How many are objects in class: \"User\" -> \(User.count)")
 anotherUser.weight = 98
@@ -186,7 +187,7 @@ class SecondPerson {
     }
 }
 var peter = SecondPerson()
-peter.age = 334625275
+peter.age = 12
 print(peter.age)
 
 /*
