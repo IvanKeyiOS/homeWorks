@@ -1,7 +1,6 @@
 import UIKit
-
 // MARK: - 🏠 Домашнее задание.
-
+ 
 // TODO: - 🧑‍💻
 /*
 Создайте структуру футболист.
@@ -13,58 +12,65 @@ import UIKit
 Отсортируйте массив по фамилии игроков (по возрастанию). Если фамилии одинаковые, сравнивайте по имени. Распечатайте.+
 Напишите функцию, которая отсортирует массив на разные массивы по должностям (т.е. нападающие в отдельный и т.д.)+
 Посчитайте общее количество забитых командой голов.
+Посчитайте общее количество забитых командой голов.+
 */
+enum Position: String {
+    case goalkeaper
+    case defenseman
+    case midfielder
+    case striker
+}
 
 struct FootballPlayer {
     let name: String
     let surename: String
     let age: Int
     let goalsAmount: Int
-    let position: String
+    let position: Position
 }
 
-let firstPlayer: FootballPlayer = FootballPlayer(name: "Draymond", surename: "Green", age: 35, goalsAmount: 0, position: "Goalkeaper")
-let secondPlayer: FootballPlayer = FootballPlayer(name: "Stephen", surename: "Curry", age: 36, goalsAmount: 3, position: "Defenseman")
-let thirdPlayer: FootballPlayer = FootballPlayer(name: "Andre", surename: "Igudala", age: 39, goalsAmount: 7, position: "Midfielder")
-let fourthPlayer: FootballPlayer = FootballPlayer(name: "Klay", surename: "Thompson", age: 35, goalsAmount: 2, position: "Defenseman")
-let fifthPlayer: FootballPlayer = FootballPlayer(name: "Kevin", surename: "Durant", age: 38, goalsAmount: 15, position: "Striker")
+let firstPlayer: FootballPlayer = FootballPlayer(name: "Draymond", surename: "Green", age: 35, goalsAmount: 0, position: Position.goalkeaper)
+let secondPlayer: FootballPlayer = FootballPlayer(name: "Stephen", surename: "Curry", age: 36, goalsAmount: 3, position: Position.defenseman)
+let thirdPlayer: FootballPlayer = FootballPlayer(name: "Andre", surename: "Igudala", age: 39, goalsAmount: 7, position: Position.midfielder)
+let fourthPlayer: FootballPlayer = FootballPlayer(name: "Klay", surename: "Thompson", age: 35, goalsAmount: 2, position: Position.defenseman)
+let fifthPlayer: FootballPlayer = FootballPlayer(name: "Kevin", surename: "Durant", age: 38, goalsAmount: 15, position: Position.striker)
 
 var bocaJuniors: [FootballPlayer] = []
 bocaJuniors += [firstPlayer, secondPlayer, thirdPlayer, fourthPlayer, fifthPlayer]
 
-bocaJuniors.enumerated().forEach { print("\($0) \($1)") }
+func printDatePlayer(bocaJuniors: [FootballPlayer]) {
+    bocaJuniors.enumerated().forEach { print("\($0) \($1)") }
+}
+
+printDatePlayer(bocaJuniors: bocaJuniors)
+
 print("=============================================================================================================================")
 
 let moreGoalsAmount: [FootballPlayer] = bocaJuniors.sorted { $0.goalsAmount > $1.goalsAmount }
 moreGoalsAmount.forEach { print($0) }
 print("=============================================================================================================================")
 
-let sortSureName: [FootballPlayer] = bocaJuniors.sorted { $0.surename < $1.surename }
+let sortSureName: [FootballPlayer] = bocaJuniors.sorted { $0.name < $1.name }.sorted { $0.surename < $1.surename }
 sortSureName.forEach { print($0) }
 print("=============================================================================================================================")
 
-let goalkeaper: [FootballPlayer] = bocaJuniors.filter { $0.position == "Goalkeaper" }
-print(goalkeaper)
-print("=============================================================================================================================")
+func sortedArray(bocaJuniors: [FootballPlayer]) {
 
-let defenseman: [FootballPlayer] = bocaJuniors.filter { $0.position == "Defenseman" }
-print(defenseman)
-print("=============================================================================================================================")
+    let goalkeaperArray: [FootballPlayer] = bocaJuniors.filter { $0.position == Position.goalkeaper }
+    let defensemanArray: [FootballPlayer] = bocaJuniors.filter { $0.position == Position.defenseman }
+    let midfielderArray: [FootballPlayer] = bocaJuniors.filter { $0.position == Position.midfielder }
+    let strikerArray: [FootballPlayer] = bocaJuniors.filter { $0.position == Position.striker }
+}
+sortedArray(bocaJuniors: bocaJuniors)
 
-let midfielder: [FootballPlayer] = bocaJuniors.filter { $0.position == "Midfielder" }
-print(midfielder)
-print("=============================================================================================================================")
-
-let striker: [FootballPlayer] = bocaJuniors.filter { $0.position == "Striker" }
-print(striker)
 print("=============================================================================================================================")
 
 let goalsAmont: [Int] = bocaJuniors.map { ($0.goalsAmount) }
-let overalGoalsAmount: Int = goalsAmont.reduce(0, { $0 + $1 } )
+let overalGoalsAmount: Int = goalsAmont.reduce(0, + )
 print(overalGoalsAmount)
+
 
 /*
  TODO: - ❓ Вопросы к изучению:
  Повторите название и назначение всех изученных функций высшего порядка. Будьте готовы рассказать о каждой.
  */
-
