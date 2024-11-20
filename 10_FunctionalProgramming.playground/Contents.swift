@@ -49,17 +49,30 @@ print("=========================================================================
 let moreGoalsAmount: [FootballPlayer] = bocaJuniors.sorted { $0.goalsAmount > $1.goalsAmount }
 moreGoalsAmount.forEach { print($0) }
 print("=============================================================================================================================")
+let sortSureName: [FootballPlayer] = bocaJuniors.sorted { (firstPlayer: FootballPlayer, secondPlayer: FootballPlayer) in
+    if firstPlayer.surename == secondPlayer.surename {
+        return firstPlayer.name < secondPlayer.name
+    }
+    return firstPlayer.surename < secondPlayer.surename
+}
 
-let sortSureName: [FootballPlayer] = bocaJuniors.sorted { $0.name < $1.name }.sorted { $0.surename < $1.surename }
 sortSureName.forEach { print($0) }
 print("=============================================================================================================================")
 
-func sortedArray(bocaJuniors: [FootballPlayer]) {
-
+func sortedArray(bocaJuniors: [FootballPlayer]) -> [[FootballPlayer]]  {
+    
     let goalkeaperArray: [FootballPlayer] = bocaJuniors.filter { $0.position == Position.goalkeaper }
     let defensemanArray: [FootballPlayer] = bocaJuniors.filter { $0.position == Position.defenseman }
     let midfielderArray: [FootballPlayer] = bocaJuniors.filter { $0.position == Position.midfielder }
     let strikerArray: [FootballPlayer] = bocaJuniors.filter { $0.position == Position.striker }
+    var arrayByArray: [[FootballPlayer]] = []
+    arrayByArray.append(goalkeaperArray)
+    arrayByArray.append(defensemanArray)
+    arrayByArray.append(midfielderArray)
+    arrayByArray.append(strikerArray)
+  
+
+    return arrayByArray
 }
 sortedArray(bocaJuniors: bocaJuniors)
 
