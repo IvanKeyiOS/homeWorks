@@ -35,18 +35,18 @@ class Car {
     let model: String
     let typeFuel: Fuel
     let transmission: Tranmission
-    let engine: Double
+    let engineCapacity: Double
     
     init(mark: String,
          model: String,
          typeFuel: Fuel,
          transmission: Tranmission,
-         engine: Double) {
+         engineCapacity: Double) {
         self.mark = mark
         self.model = model
         self.typeFuel = typeFuel
         self.transmission = transmission
-        self.engine = engine
+        self.engineCapacity = engineCapacity
     }
     
     final func start() {
@@ -58,7 +58,11 @@ class Car {
     }
 }
 
-let car = Car(mark: "Volvo", model: "XC90", typeFuel: .gasoline, transmission: .automatic, engine: 3.0)
+let car = Car(mark: "Volvo",
+              model: "XC90",
+              typeFuel: .gasoline,
+              transmission: .automatic,
+              engineCapacity: 3.0)
 car.start()
 car.setup()
 
@@ -69,10 +73,14 @@ class Crossover: Car {
          model: String,
          typeFuel: Fuel,
          transmission: Tranmission,
-         engine: Double,
+         engineCapacity: Double,
          isLockDifferential: Bool) {
         self.isLockDifferential = isLockDifferential
-        super.init(mark: mark, model: model, typeFuel: typeFuel, transmission: transmission, engine: engine)
+        super.init(mark: mark,
+                   model: model, 
+                   typeFuel: typeFuel, 
+                   transmission: transmission, 
+                   engineCapacity: engineCapacity)
     }
     
     override func setup() {
@@ -80,7 +88,12 @@ class Crossover: Car {
     }
 }
 
-let crossover = Crossover(mark: "BMW", model: "X6", typeFuel: .diesel, transmission: .hydraulicAutomatic, engine: 5.0, isLockDifferential: true)
+let crossover = Crossover(mark: "BMW",
+                          model: "X6",
+                          typeFuel: .diesel,
+                          transmission: .hydraulicAutomatic,
+                          engineCapacity: 5.0,
+                          isLockDifferential: true)
 crossover.start()
 crossover.setup()
 
@@ -91,10 +104,14 @@ class Sedan: Car {
          model: String,
          typeFuel: Fuel,
          transmission: Tranmission,
-         engine: Double,
+         engineCapacity: Double,
          weight: Int) {
         self.weight = weight
-        super.init(mark: mark, model: model, typeFuel: typeFuel, transmission: transmission, engine: engine)
+        super.init(mark: mark,
+                   model: model,
+                   typeFuel: typeFuel,
+                   transmission: transmission,
+                   engineCapacity: engineCapacity)
     }
     
     override func setup() {
@@ -102,7 +119,12 @@ class Sedan: Car {
     }
 }
 
-let sedan = Sedan(mark: "Audi", model: "A8", typeFuel: .naturalGas, transmission: .semiAutomatic, engine: 3.0, weight: 2080)
+let sedan = Sedan(mark: "Audi",
+                  model: "A8",
+                  typeFuel: .naturalGas,
+                  transmission: .semiAutomatic,
+                  engineCapacity: 3.0,
+                  weight: 2080)
 sedan.start()
 sedan.setup()
 
