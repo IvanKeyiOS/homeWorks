@@ -18,7 +18,8 @@ let sumOfTwoNumbers = sumCloser(5, 4)
 let someString: String = "Follow this exercise to try the GitHub flow"
 
 //let lowerString: String = someString.lowercased()
-//let modernString: String = lowerString.replacingOccurrences(of: " ", with: "")
+//let upperString: String = someString.uppercased()
+//let modernString: String = upperString.replacingOccurrences(of: " ", with: "")
 
 let string = someString.sorted(by: { $0 < $1})
 print(string)
@@ -31,15 +32,18 @@ print("=========================================================================
  Обратите внимание на порядок выполнения кода.
  */
 
-func funcGetTheClosure(closure: ()) {
+func funcGetTheClosure(closure: () -> Void ) {
     var number: Int = 0
     while number < 5 {
         number += 1
         print(number)
     }
+    closure()
 }
 
-funcGetTheClosure(closure: print("Closure"))
+funcGetTheClosure(closure: {
+    print("Closure")
+})
 print("====================================================================================================================================")
 /*
  Напишите функцию modify, которая принимает массив типа Int и замыкание типа (Int) -> Int. Функция должна возвращать массив типа Int. Напишите реализацию функции, в которой замыкание будет вызвано для каждого элемента массива и будет этот элемент неким образом преобразовывать. Верните из функции массив, состоящий из элементов возвращенных замыканием.
@@ -54,8 +58,8 @@ func modify(numbersArray: [Int], closure: (Int) -> Int) -> [Int] {
     }
     return someNumbersArray
 }
-
-print(modify(numbersArray: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 51, 41, 31, 21, 11, ], closure: { $0 * 2 }))
+let numbersArray: [Int] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 51, 41, 31, 21, 11]
+print(modify(numbersArray: numbersArray, closure: { $0 * 2 }))
 print("====================================================================================================================================")
 
 /*
@@ -85,7 +89,7 @@ class Task {
 let task = Task()
 task.reloadData?(task.get())
 task.get()
-
+print("====================================================================================================================================")
 // Дополнительное задание по желанию
 
 /*
@@ -141,10 +145,10 @@ class Autoservice {
         self.cars = cars
     }
     
-    func fix(Car: Car, _: () -> Void) {
+    func fix(Car: Car, closereAutoservice: @escaping () -> Void) {
         Autoservice(cars: [])
         DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
-            ()
+            closereAutoservice()
         }
     }
 }
@@ -168,11 +172,11 @@ class Person {
     }
     
     func goToHome() {
-        Car(brand: "", number: 1, isBroken: false).move()
+        Car(brand: "", number: 0, isBroken: false).move()
     }
     
     func goToService() {
-        Autoservice.init(cars: []).fix(Car: Car(brand: "", number: 1, isBroken: false),)
+        Autoservice(cars: [""]).fix(Car: Car(brand: "", number: 0, isBroken: false), closereAutoservice: {  })
             }
 }
 
@@ -183,9 +187,9 @@ class Person {
  У person вызовите метод goToService() и следом goToHome().
  Разберитесь в порядке выполнения кода.
  */
-let autoservice = Autoservice(cars: [:])
-let car = Car(brand: "", number: 1, isBroken: false)
-let person = Person(name: "Stephen", car: Car(brand: "BMW", number: 2222, isBroken: <#T##Bool#>), service: <#T##Autoservice#>)
+let autoservice = Autoservice(cars: [""])
+let car = Car(brand: "", number: 0, isBroken: false)
+let person = Person(name: "Stephen", car: Car(brand: "BMW", number: 2222, isBroken: true), service: Autoservice(cars: [""]))
 
 car.isBroken == true
 
