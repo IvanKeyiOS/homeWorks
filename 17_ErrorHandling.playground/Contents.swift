@@ -38,7 +38,8 @@ enum ShipError: Error {
     case notEnoughNumbersOfCrewMembers(required: Int, current: Int)
     case notEnoughNumbersOfCabins(shortages: [Cabin: Int])
     case notEnoughNumbersServiceStaff(required: Int, current: Int)
-    case invalidPassengerTicket
+    case invalidPassengerTickets(passengers: [Passenger])
+    case duplicateTickets(passengers: [Passenger])
 }
 
 enum CrewPosition: String {
@@ -98,8 +99,7 @@ struct Ship {
                                 .suite: 10,
                                 .economy: 15,
                                 .firstClass: 20,
-                                .vip: 5
-    ]
+                                .vip: 5]
     
     // MARK: Add new member of crew
     mutating func addCrewMember(_ member: CrewMember) {
@@ -112,63 +112,102 @@ struct Ship {
        }
 
     // MARK: Add new passenger on board
-    mutating func addPassenger(_ passenger: Passenger)  {
-        guard !passenger.ticket.isEmpty else {
-            return print("Ошибка: у пассажира нет билета.")
+    mutating func addPassengers(_ passengersToAdd: [Passenger]) throws {
+        var invalidPassengers: [Passenger] = []
+        var duplicatePassengers: [Passenger] = []
+        var existingTickets: Set<String> = Set(passengers.map { $0.ticket })
+
+        for passenger in passengersToAdd {
+            // MARK: Проверка на наличие билета
+            if passenger.ticket.isEmpty {
+                invalidPassengers.append(passenger)
+            }
+            // MARK: Проверка на дублирующиеся билеты
+            else if existingTickets.contains(passenger.ticket) {
+                duplicatePassengers.append(passenger)
+            } else {
+                passengers.append(passenger)
+                existingTickets.insert(passenger.ticket)
+            }
         }
-        passengers.append(passenger)
+
+        // MARK: Обработка ошибок
+        if !invalidPassengers.isEmpty {
+            throw ShipError.invalidPassengerTickets(passengers: invalidPassengers)
+        }
+        if !duplicatePassengers.isEmpty {
+            throw ShipError.duplicateTickets(passengers: duplicatePassengers)
+        }
     }
 
+    
     // MARK: Check wether ship has a captain and a mechanic
-       func checkBeforeDeparture() throws {
-           let requiredCrew = [
-               CrewPosition.captain,
-               CrewPosition.mechanic
-           ]
+    private func checkWetherShipHasCaptainMechanic() throws {
+        let requiredCrew = [CrewPosition.captain,
+                            CrewPosition.mechanic]
+        
+        let missingRoles = requiredCrew.filter { role in
+            !crew.contains(where: { $0.position == role })
+        }
+        
+        if !missingRoles.isEmpty {
+            throw ShipError.missingCrewMember(roles: missingRoles)
+        }
+    }
+    
+    // MARK: Check enough work experience members of crew
+    private func checkEnoughWorkExperience() throws {
+        let inexperiencedCrew = crew.filter { $0.workExperience < 3 }
+        if !inexperiencedCrew.isEmpty {
+            throw ShipError.notEnoughExperiencedCrew(members: inexperiencedCrew)
+        }
+    }
+    
+    // MARK: Check minimum numbers of crew members
+    private func checkMinimumNumbersOfCrewMember() throws {
+        let minimumCrewCount = 10
+        if crew.count < minimumCrewCount {
+            throw ShipError.notEnoughNumbersOfCrewMembers(required: minimumCrewCount, current: crew.count)
+        }
+    }
+    
+    // MARK: Check enough numbers cabins on the board
+    private func checkEnoughNumbersCabinsOnBoard() throws {
+        var cabinShortages: [Cabin: Int] = [:]
+        for cabinClass in cabins.keys {
+            let requiredCabins = passengers.filter { $0.whatCabinTheyHave == cabinClass }.count
+            if requiredCabins > cabins[cabinClass, default: 0] {
+                cabinShortages[cabinClass] = requiredCabins - cabins[cabinClass, default: 0]
+            }
+        }
+        
+        if !cabinShortages.isEmpty {
+            throw ShipError.notEnoughNumbersOfCabins(shortages: cabinShortages)
+        }
+    }
+    
+    // MARK: Check passengers and numbers service crew
+    private func checkPassengersAndNumbersServiceCrew() throws {
+        let maxPassengersPerServiceStaff = Int(Double(serviceCrew.count) * 1.3)
+        if passengers.count > maxPassengersPerServiceStaff {
+            let additionalStaffNeeded = Int(ceil(Double(passengers.count) / 1.3)) - serviceCrew.count
+            throw ShipError.notEnoughNumbersServiceStaff(required: additionalStaffNeeded, current: serviceCrew.count)
+        }
+    }
 
-           let missingRoles = requiredCrew.filter { role in
-               !crew.contains(where: { $0.position == role })
-           }
 
-           if !missingRoles.isEmpty {
-               throw ShipError.missingCrewMember(roles: missingRoles)
-           }
-
-           // MARK: Check enough work experience members of crew
-           let inexperiencedCrew = crew.filter { $0.workExperience < 3 }
-           if !inexperiencedCrew.isEmpty {
-               throw ShipError.notEnoughExperiencedCrew(members: inexperiencedCrew)
-           }
-
-           // MARK: Check minimum numbers of crew members
-           let minimumCrewCount = 10
-           if crew.count < minimumCrewCount {
-               throw ShipError.notEnoughNumbersOfCrewMembers(required: minimumCrewCount, current: crew.count)
-           }
-
-           // MARK: Check enough numbers cabins on the board
-           var cabinShortages: [Cabin: Int] = [:]
-           for cabinClass in cabins.keys {
-               let requiredCabins = passengers.filter { $0.whatCabinTheyHave == cabinClass }.count
-               if requiredCabins > cabins[cabinClass, default: 0] {
-                   cabinShortages[cabinClass] = requiredCabins - cabins[cabinClass, default: 0]
-               }
-           }
-
-           if !cabinShortages.isEmpty {
-               throw ShipError.notEnoughNumbersOfCabins(shortages: cabinShortages)
-           }
-
-           // MARK: Check passengers and numbers service crew
-           let maxPassengersPerServiceStaff = Int(Double(serviceCrew.count) * 1.3)
-           if passengers.count > maxPassengersPerServiceStaff {
-               let additionalStaffNeeded = Int(ceil(Double(passengers.count) / 1.3)) - serviceCrew.count
-               throw ShipError.notEnoughNumbersServiceStaff(required: additionalStaffNeeded, current: serviceCrew.count)
-           }
-
-           print("Корабль готов к отплытию. Начинаем путешествие!")
-       }
-   }
+    // MARK: Check wether ship has a captain and a mechanic
+    func checkBeforeDeparture() throws {
+        
+//        try checkWetherShipHasCaptainMechanic()
+//        try checkEnoughWorkExperience()
+//        try checkMinimumNumbersOfCrewMember()
+        try checkEnoughNumbersCabinsOnBoard()
+//        try checkPassengersAndNumbersServiceCrew()
+        
+        print("Корабль готов к отплытию. Начинаем путешествие!")
+    }
+}
 
 var ship = Ship()
 
@@ -201,28 +240,38 @@ ship.addServiceMember(ServiceCrew(name: "Derek", surname: "Carter", position: .m
 ship.addServiceMember(ServiceCrew(name: "Derek", surname: "Carter", position: .maid, workExperience: 5))
 ship.addServiceMember(ServiceCrew(name: "Derek", surname: "Carter", position: .maid, workExperience: 5))
 
-ship.addPassenger(Passenger(name: "Nicole", surname: "Lowrance", whatCabinTheyHave: .deluxe, ticket: "D20"))
-ship.addPassenger(Passenger(name: "Nicole", surname: "Lowrance", whatCabinTheyHave: .deluxe, ticket: "D20"))
-ship.addPassenger(Passenger(name: "Nicole", surname: "Lowrance", whatCabinTheyHave: .deluxe, ticket: "D20"))
-ship.addPassenger(Passenger(name: "Nicole", surname: "Lowrance", whatCabinTheyHave: .deluxe, ticket: "D20"))
-ship.addPassenger(Passenger(name: "Nicole", surname: "Lowrance", whatCabinTheyHave: .deluxe, ticket: "D20"))
-ship.addPassenger(Passenger(name: "Nicole", surname: "Lowrance", whatCabinTheyHave: .deluxe, ticket: "D20"))
-ship.addPassenger(Passenger(name: "Nicole", surname: "Lowrance", whatCabinTheyHave: .deluxe, ticket: "D20"))
-ship.addPassenger(Passenger(name: "Nicole", surname: "Lowrance", whatCabinTheyHave: .deluxe, ticket: "D20"))
-ship.addPassenger(Passenger(name: "Nicole", surname: "Lowrance", whatCabinTheyHave: .deluxe, ticket: "D20"))
-ship.addPassenger(Passenger(name: "Nicole", surname: "Lowrance", whatCabinTheyHave: .deluxe, ticket: "D20"))
-ship.addPassenger(Passenger(name: "Nicole", surname: "Lowrance", whatCabinTheyHave: .deluxe, ticket: "D20"))
-ship.addPassenger(Passenger(name: "Nicole", surname: "Lowrance", whatCabinTheyHave: .deluxe, ticket: "D20"))
-//ship.addPassenger(Passenger(name: "Nicole", surname: "Lowrance", whatCabinTheyHave: .deluxe, ticket: ""))
-ship.addPassenger(Passenger(name: "Nicole", surname: "Lowrance", whatCabinTheyHave: .deluxe, ticket: "D20"))
-ship.addPassenger(Passenger(name: "Nicole", surname: "Lowrance", whatCabinTheyHave: .deluxe, ticket: "D20"))
-ship.addPassenger(Passenger(name: "Nicole", surname: "Lowrance", whatCabinTheyHave: .deluxe, ticket: "D20"))
-ship.addPassenger(Passenger(name: "Nicole", surname: "Lowrance", whatCabinTheyHave: .deluxe, ticket: "D20"))
-ship.addPassenger(Passenger(name: "Nicole", surname: "Lowrance", whatCabinTheyHave: .deluxe, ticket: "D20"))
-ship.addPassenger(Passenger(name: "Nicole", surname: "Lowrance", whatCabinTheyHave: .deluxe, ticket: "D20"))
-ship.addPassenger(Passenger(name: "Nicole", surname: "Lowrance", whatCabinTheyHave: .deluxe, ticket: "D20"))
-ship.addPassenger(Passenger(name: "Nicole", surname: "Lowrance", whatCabinTheyHave: .deluxe, ticket: "D20"))
+let passengersToAdd = [Passenger(name: "Nicole", surname: "Lowrance", whatCabinTheyHave: .deluxe, ticket: "D01"),
+                       Passenger(name: "Nicole", surname: "Lowrance", whatCabinTheyHave: .deluxe, ticket: "D02"),
+                       Passenger(name: "Nicole", surname: "Lowrance", whatCabinTheyHave: .deluxe, ticket: "D03"),
+                       Passenger(name: "Nicole", surname: "Lowrance", whatCabinTheyHave: .deluxe, ticket: "D04"),
+                       Passenger(name: "Nicole", surname: "Lowrance", whatCabinTheyHave: .deluxe, ticket: "D05"),
+                       Passenger(name: "Nicole", surname: "Lowrance", whatCabinTheyHave: .deluxe, ticket: "D06"),
+                       Passenger(name: "Nicole", surname: "Lowrance", whatCabinTheyHave: .deluxe, ticket: "D07"),
+                       Passenger(name: "Nicole", surname: "Lowrance", whatCabinTheyHave: .deluxe, ticket: "D08"),
+                       Passenger(name: "Nicole", surname: "Lowrance", whatCabinTheyHave: .deluxe, ticket: "D09"),
+                       Passenger(name: "Nicole", surname: "Lowrance", whatCabinTheyHave: .deluxe, ticket: "D10"),
+                       Passenger(name: "Nicole", surname: "Lowrance", whatCabinTheyHave: .deluxe, ticket: "D11"),
+                       Passenger(name: "Nicole", surname: "Lowrance", whatCabinTheyHave: .deluxe, ticket: "D12"),
+                       Passenger(name: "Nicole", surname: "Lowrance", whatCabinTheyHave: .deluxe, ticket: "D13"),
+                       Passenger(name: "Nicole", surname: "Lowrance", whatCabinTheyHave: .deluxe, ticket: "D14"),
+                       Passenger(name: "Nicole", surname: "Lowrance", whatCabinTheyHave: .deluxe, ticket: "D15"),
+                       Passenger(name: "Nicole", surname: "Lowrance", whatCabinTheyHave: .deluxe, ticket: "D16"),
+                       Passenger(name: "Nicole", surname: "Lowrance", whatCabinTheyHave: .deluxe, ticket: "D17"),
+                       Passenger(name: "Nicole", surname: "Lowrance", whatCabinTheyHave: .deluxe, ticket: "D18"),
+                       Passenger(name: "Nicole", surname: "Lowrance", whatCabinTheyHave: .deluxe, ticket: "D19"),
+//                       Passenger(name: "Nicole", surname: "Lowrance", whatCabinTheyHave: .deluxe, ticket: "D21"),
+                       Passenger(name: "Nicole", surname: "Lowrance", whatCabinTheyHave: .deluxe, ticket: "D20")]
 
+do {
+    try ship.addPassengers(passengersToAdd)
+} catch ShipError.invalidPassengerTickets(let passengers) {
+    let names = passengers.map { "\($0.name) \($0.surname)" }.joined(separator: ", ")
+    print("Ошибка: следующие пассажиры не имеют билетов: \(names).")
+} catch ShipError.duplicateTickets(let passengers) {
+    let names = passengers.map { "\($0.name) \($0.surname)" }.joined(separator: ", ")
+    print("Ошибка: следующие пассажиры имеют дублирующиеся билеты: \(names).")
+}
+    
 do {
     try ship.checkBeforeDeparture()
 } catch ShipError.missingCrewMember(let roles) {
